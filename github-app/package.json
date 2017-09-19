@@ -1,0 +1,31 @@
+{
+  "name": "connect-to-github",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "mocha",
+    "prestart": "tsc",
+    "watch": "tsc -w",
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:skyjur/playground.git"
+  },
+  "author": "Skirmantas",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/skyjur/playground/issues"
+  },
+  "dependencies": {
+    "@types/express": "^4.0.37",
+    "express": "^4.15.4"
+  },
+  "devDependencies": {
+    "typescript": "~2.5.2"
+  },
+  "engines": {
+    "node": "8.4.0"
+  }
+}

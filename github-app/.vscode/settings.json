@@ -1,0 +1,12 @@
+{
+    "search.useIgnoreFilesByDefault": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*map.js": true,
+        "src/*js": true
+    }
+}
