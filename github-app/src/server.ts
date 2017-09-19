@@ -4,7 +4,7 @@ import {env} from 'process';
 
 export class App {
     app = express();
-    port = env['APP_PORT'] || '8000';
+    port = env['PORT'] || '8000';
 
     constructor(settings?: Partial<App>) {
         if(settings) {
