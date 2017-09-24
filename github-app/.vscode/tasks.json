@@ -17,8 +17,16 @@
         {
             "type": "npm",
             "script": "watch",
-            "problemMatcher": ["$tsc-watch"],
+            "problemMatcher": [
+                "$tsc-watch"
+            ],
             "group": "build"
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "problemMatcher": [],
+            "isBackground": true
         }
     ]
 }
