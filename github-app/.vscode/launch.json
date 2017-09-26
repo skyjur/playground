@@ -5,7 +5,9 @@
                 "type": "node",
                 "request": "launch",
                 "name": "Launch Program",
-                "program": "${workspaceRoot}\\src\\server.js"
+                "program": "${workspaceRoot}\\src\\server.js",
+                "envFile": "${workspaceRoot}/.env",
+                "console": "integratedTerminal"
             }
         ]
     }
