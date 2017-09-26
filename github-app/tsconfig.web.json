@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "inlineSourceMap": true,
+        "inlineSources": true,
+        "target": "es5",
+        "lib": [
+            "es2015", "dom"
+        ],
+        "jsx": "react",
+        "outFile": "src/static/bundle.js",
+        "module": "amd",
+        "allowJs": true,
+        "checkJs": false,
+        "moduleResolution": "classic",
+        "types": [
+            "node_modules/@types/jquery"
+        ]
+    },
+    "files": [
+        "node_modules/almond/almond.js",
+        "src/client.tsx"
+    ]
+}
