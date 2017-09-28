@@ -2,24 +2,21 @@ doctype html
 html
     head
         title Github Test App
-        link(
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css"
-            integrity="sha256-m/h/cUDAhf6/iBRixTbuc8+Rg2cIETQtPcH9D3p2Kg0="
-            crossorigin="anonymous"
-        )
-    body
-        p hello, token is: #{token}
+        <link rel="stylesheet" href="static/style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    body
         #app
 
-        a(href="/logout") Logout
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js" integrity="sha256-aB35laj7IZhLTx58xw/Gm1EKOoJJKZt6RY+bH1ReHxs=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.min.js" integrity="sha256-ivdPAn5h6U67z6OPgwfiLM9ug6levxmYFqWNxNCV0YE=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.min.js" integrity="sha256-UEqn5+tyzezD6A5HBMNTlc5mXkmt+ohTfCBPtXMaGb0=" crossorigin="anonymous"></script>
         script(src="static/bundle.js")
         script.
             define('react', [], React);
             define('react-dom', [], ReactDOM);
-            require(['client'], client=>client.runApp(document.getElementById('app')));
+            require(['client'], client=>{
+                window.mainController = client.MainController.attachTo(document.getElementById('app')
+            )});
+        
+        <!-- token: #{token} -->

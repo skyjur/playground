@@ -7,8 +7,8 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/*map.js": true,
-        "src/*js": false,
-        "src/*jsx": true,
-        "src/*jsx.map": true
+        "src/client/*js": false,
+        "src/client/*jsx": true,
+        "src/client/*jsx.map": true
     }
 }

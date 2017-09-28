@@ -14,11 +14,12 @@
         "checkJs": false,
         "moduleResolution": "classic",
         "types": [
-            "node_modules/@types/jquery"
+            "node_modules/@types/react",
+            "node_modules/@types/react-dom"
         ]
     },
-    "files": [
+    "include": [
         "node_modules/almond/almond.js",
-        "src/client.tsx"
+        "src/client/*"
     ]
 }

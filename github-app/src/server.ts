@@ -5,6 +5,7 @@ import * as querystring from 'querystring';
 import * as request from 'request-promise-native';
 import {envGet, Crypto} from './utils';
 import * as path from 'path';
+import * as sassMiddleware from 'node-sass-middleware';
 
 
 let CLIENT_ID = envGet('GITHUB_CLIENT_ID');
@@ -33,10 +34,17 @@ export class App {
     crypt = new Crypto(CLIENT_SECRET);
 
     constructor(settings?: Partial<App>) {
+        this.app.use(sassMiddleware({
+            src: path.join(__dirname, 'sass'),
+            dest: path.join(__dirname, 'static'),
+            debug: true,
+            outputStyle: 'expanded',
+            prefix: "/static"
+        }));
         this.app.use(CookieParser());
         this.app.use(this.tokenMiddleware);
         this.app.set('views', __dirname);
-        this.app.use('/static/', express.static(path.join(__dirname, 'static')));
+        this.app.use('/static', express.static(path.join(__dirname, 'static')));
         this.initRoutes(this.app);
         if(settings) {
             for(let key in settings) { this[key] = settings[key]; }
