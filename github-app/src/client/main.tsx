@@ -28,10 +28,6 @@ export class MainController extends React.Component<{}, MainControllerState> {
 
     hashChangeHandler(e: Event) {
         this.setState({ ... this.state, locationHash: location.hash });
-        let [part1, part2] = window.location.hash.split('/');
-        if(part1 === '#repo') {
-            this.openRepo(parseInt(part2));
-        }
     }
 
     openRepo(repoId: number) {
@@ -52,13 +48,24 @@ export class MainController extends React.Component<{}, MainControllerState> {
         return this.state.loading ? <ui.Loading /> : (
             <div>
                 <SidebarPanel {... this.state} />
-                <ContentPanel {... this.state} />
+                {this.renderContent()}
             </div>
         );
     }
 
     static attachTo(container) {
         return DOM.render(<MainController />, container);
+    }
+
+    renderContent() {
+        let [part1, part2] = utils.splitOnce(this.state.locationHash, '/');
+        switch(part1) {
+            case '#repo': {
+                let [repoId, path] = utils.splitOnce(part2, '/');
+                return <RepoContent key={part2} repoId={parseInt(repoId)} path={path} />
+            }
+        }
+        return null;
     }
 }
 
@@ -82,8 +89,51 @@ class SidebarPanel extends React.Component<MainControllerState, {}> {
     }
 }
 
-class ContentPanel extends React.Component<MainControllerState, {}> {
-    render() {
-        return <div></div>
+interface RepoContentProps {
+    repoId: number,
+    path: string
+}
+
+interface RepoContetState {
+    loading: boolean;
+    content?: Github.Content[]
+}
+
+class RepoContent extends React.Component<RepoContentProps, RepoContetState> {
+    constructor(props, context) {
+        props = {... props, path: (props.path || '')}
+        super(props, context);
+        this.state = { loading: true };
+        this.init();
     }
+
+    async init() {
+        this.setState({
+            ... this.state,
+            loading: false,
+            content: await api.getContents(this.props.repoId, '/' + this.props.path)
+        });
+    }
+
+    render() {
+        if(this.state.loading) {
+            return <ui.Loading />
+        }
+        return <table>
+            {this.state.content.map(i => this.renderRow(i))}
+        </table>
+    }
+
+    renderRow(item: Github.Content) {
+        return <tr>
+            <td>{ item.type }</td>
+            <td>
+                <a href={utils.repoHref(this.props.repoId, item.path)}>{ item.name }</a>
+            </td>
+            <td>
+            </td>
+        </tr>
+    }
+
+    
 }

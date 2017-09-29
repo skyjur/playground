@@ -1,4 +1,5 @@
 import {env, exit, stderr} from 'process';
+import {Request, Response} from './app';
 import * as crypto from 'crypto';
 
 
@@ -23,5 +24,12 @@ export class Crypto {
     decrypt(value: string) {
         let decipher = crypto.createDecipher('aes-256-ctr', this.password);
         return decipher.update(value, 'hex', 'utf8') + decipher.final('utf8');
+    }
+}
+
+
+export function catchError(f: (req, res, next) => Promise<void>) {
+    return (req: Request, res: Response, next: ()=>void) => {
+        return f(req, res, next).catch(next);
     }
 }

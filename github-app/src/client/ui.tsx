@@ -37,7 +37,7 @@ export class MenuSection extends React.Component<MenuProps, {}> {
     }
 
     className(href: string) {
-        return href === this.props.activeHref ? "active" : "";
+        return this.props.activeHref && href === this.props.activeHref.substr(0, href.length) ? "active" : "";
     }
 }
 

@@ -4,8 +4,16 @@
             {
                 "type": "node",
                 "request": "launch",
-                "name": "Launch Program",
+                "name": "Launch Server",
                 "program": "${workspaceRoot}\\src\\server.js",
+                "envFile": "${workspaceRoot}/.env",
+                "console": "integratedTerminal"
+            },
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Run Check",
+                "program": "${workspaceRoot}\\src\\runcheck.js",
                 "envFile": "${workspaceRoot}/.env",
                 "console": "integratedTerminal"
             }

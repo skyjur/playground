@@ -16,6 +16,11 @@ export async function getAllRepositories() : Promise<Github.Repository[]> {
     return [].concat(... result.map(obj => obj.repositories));
 }
 
+export async function getContents(repoId, path) : Promise<Github.Content[]> {
+    let resp: Github.Content[] = await apiGet(`/repositories/${repoId}/contents${path}`);
+    return resp;
+}
+
 export function getUser() : Promise<Github.User> {
     return apiGet('/user');
 }

@@ -2,6 +2,7 @@ declare namespace Github {
     class Repository {
         id: number;
         name: string;
+        owner: User;
     }
     
     interface RepositoriesResponse {
@@ -11,6 +12,7 @@ declare namespace Github {
     
     interface Installation {
         id: number;
+        app_id: number;
     }
     
     interface InstallationsResponse {
@@ -22,5 +24,12 @@ declare namespace Github {
         login: string,
         id: number,
         avatar_url: string
+    }
+
+    interface Content {
+        type: "file" | "symlink" | "dir",
+        name: string,
+        size: number,
+        path: string
     }
 }
