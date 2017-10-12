@@ -9,9 +9,7 @@ and static type checks for server implementation and client calls.
 2) On server use `class ImplementationX implements InterfaceX` to implement the interface
 3) On client use `new RemoteApi<IX>()`, without having to duplicate method descsriptors.
 
-## What I managed to achieve
-
-### 1) Define available API methods - easy
+### 1) Define available API methods
 
 ```ts
 interface ServiceInterface {
@@ -19,7 +17,7 @@ interface ServiceInterface {
 }
 ```
 
-### 2) Implement api on the server - easy
+### 2) Implement api on the server
 
 ```ts
 class Serivce implements ServiceInterface {
@@ -31,7 +29,7 @@ class Serivce implements ServiceInterface {
 
 ### 3) Typesafe API consumption on the client
 
-#### Method 1)
+#### Method 1:
 
 Implementation can be found in `class RemoteApi` of [client.ts](./src/client.ts#L54).
 
