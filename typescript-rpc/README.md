@@ -3,14 +3,15 @@
 Proof of concept RPC implementation with shared interface between client and server
 and static type checks for server implementation and client calls.
 
-Goals:
+## Goals
 
 1) Desribe API as typescript Interface, all methods must return Promise
 2) On server use `class ImplementationX implements InterfaceX` to implement the interface
 3) On client use `new RemoteApi<IX>()`, without having to duplicate method descsriptors.
 
+## What I managed to achieve
 
-## Define available API methods:
+### 1) Define available API methods - easy
 
 ```ts
 interface ServiceApi {
@@ -18,7 +19,7 @@ interface ServiceApi {
 }
 ```
 
-## Implement api on the server:
+### 2) Implement api on the server - easy
 
 ```ts
 class Serivce implements ServiceApi {
@@ -28,7 +29,7 @@ class Serivce implements ServiceApi {
 }
 ```
 
-## API consumption on the client
+### 3) Typesafe API consumption on the client - a bit problematic
 
 ```ts
 let api = new RemoteApi<ServiceApi>('ws://localhost:8080');
@@ -60,3 +61,7 @@ class Client<T> {
 `K` is list of keys in the interface - names of all the async methods.
 This way typescript figures that given key `K` as argument, the function
 `method()` will return signature of `T[K]`.
+
+I discovered that [ts-transformer-keys](https://github.com/kimamula/ts-transformer-keys) would
+be super useful in this situation. A rather strong downside of this solution however is that it
+requires writing custom compiler executable.
