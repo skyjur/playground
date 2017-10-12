@@ -1,44 +1,72 @@
+import * as Reflect from "reflect-metadata";
+import { ServiceInterface } from "./common";
+
 var WebSocket = WebSocket || require('ws');
 
-export class RemoteApi<T> {
-    private resolvers: {[requestId: number]: [
-        (result: any) => void,
-        (error: any) => void
-    ]} = {};
-    private nextRequestId = 1;
-    private webSocket: WebSocket;
+type P = {[key: string]: true} & {children(): void};
+
+function apiDecorator(target) {
+    console.log(arguments);
+    return target;
+}
+
+class RPCTransport {
+    nextRequestId = 1;
+    socket: WebSocket;
+    private requests: {[requestId: number]: {
+        success: (result: any) => void,
+        reject: (error: any) => void
+    }} = {};
 
     constructor(url: string, ready: () => void) {
-        this.webSocket = new WebSocket(url);
-        this.webSocket.addEventListener('message', (msg) => {
-            let data = JSON.parse(msg.data);
-            let [success, error] = this.resolvers[data.id];
-            delete this.resolvers[data.id];
-            if(typeof data.result !== undefined) {
-                success(data.result);
-            } else if(data.error) {
-                error(data.error);
-            }
-        });
-        this.webSocket.addEventListener('open', () => {
+        this.socket = new WebSocket(url);
+        this.socket.addEventListener('message', this.messageHandler);
+        this.socket.addEventListener('open', () => {
             ready();
         })
     }
 
+    private messageHandler = (msg: MessageEvent) => {
+        let data = JSON.parse(msg.data);
+        let r = this.requests[data.id];
+        delete this.requests[data.id];
+        if(typeof data.result !== undefined) {
+            r.success(data.result);
+        } else if(data.error) {
+            r.reject(data.error);
+        }
+    };
+
+    call(method: string, params: any[]) : Promise<any> {
+        let requestId = this.nextRequestId++;
+        return new Promise((success, reject) => {
+            this.requests[requestId] = {success, reject};
+            this.socket.send(JSON.stringify({
+                jsonrpc: 2.0,
+                id: requestId,
+                method: method,
+                params: params
+            }));
+        });
+    }
+}
+
+export class RemoteApi<T> extends RPCTransport {
     method<K extends keyof T>(method: K): T[K] {
         let self = this;
         return <any> function() {
-            let args = Array.from(arguments);
-            let requestId = self.nextRequestId++;
-            return new Promise((success, reject) => {
-                self.resolvers[requestId] = [success, reject];
-                self.webSocket.send(JSON.stringify({
-                    jsonrpc: 2.0,
-                    id: requestId,
-                    method: method,
-                    params: args
-                }));
-            });
+            return self.call(method, Array.from(arguments));
         }
     }
+}
+
+export function RemoteApi2<T>(url, ready) : T {
+    let transport = new RPCTransport(url, ready);
+    return <any> new Proxy({}, {
+        get: function(target, property, receiver) {
+            return function() {
+                return transport.call(property.toString(), Array.from(arguments));
+            }
+        }
+    });
 }

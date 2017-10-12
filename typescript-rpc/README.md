@@ -29,7 +29,11 @@ class Serivce implements ServiceInterface {
 }
 ```
 
-### 3) Typesafe API consumption on the client - a bit problematic
+### 3) Typesafe API consumption on the client
+
+#### Method 1)
+
+Implementation details can be found in `class RemoteApi` of [client.ts](./src/client.ts).
 
 ```ts
 let api = new RemoteApi<ServiceInterface>('ws://localhost:8080');
@@ -65,3 +69,14 @@ This way typescript figures that given key `K` as argument, the function
 I discovered that [ts-transformer-keys](https://github.com/kimamula/ts-transformer-keys) would
 be super useful in this situation. A rather strong downside of this solution however is that it
 requires writing custom compiler executable.
+
+#### Method 2: Proxy object
+
+Implementation details can be found in `function RemoteApi2()` of [client.ts](./src/client.ts).
+
+This approach uses Proxy object. API looks more fluent, but it's not supported in older browsers:
+
+```ts
+let api = RemoteApi2<ServiceInterface>('ws://localhost:8080');
+let result: number = await api.add(5, 2);
+```

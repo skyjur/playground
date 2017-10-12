@@ -5,7 +5,7 @@ import {ok, equal, fail, deepEqual} from 'assert';
 import {ITestDefinition} from 'mocha';
 import serverPromise from '../src/server';
 import { ServiceInterface } from "../src/common";
-import {RemoteApi} from '../src/client'
+import {RemoteApi, RemoteApi2} from '../src/client'
 
 
 suite('RPC Tests', function() {
@@ -96,18 +96,33 @@ suite('RPC Tests', function() {
         });
     });
 
-    suite('Client wrapper tests', () => {
+    suite('Client approach 1: RemoteApi()', () => {
         let api: RemoteApi<ServiceInterface>;
 
         setup((done) => {
             api = new RemoteApi('ws://localhost:8080', done);
         });
 
-        test('make several async calls through RemoteApi()', async () => {
+        test('make several async calls through ', async () => {
             let a = api.method('add')(4, 5);
             let b = api.method('repeat')('a', 5);
             equal(await b, 'aaaaa');
             equal(await a, 9);
         });
-    })
+
+    });
+
+    suite('Client approach 2: RemoteApi2()', () => {
+        let api: ServiceInterface;
+
+        setup((done) => {
+            api = RemoteApi2<ServiceInterface>('ws://localhost:8080', done);
+        });
+
+        test('make several async calls through RemoteApi()', async () => {
+            let a = api.add(4, 5);
+            equal(await a, 9);
+        });
+
+    });
 });
