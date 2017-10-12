@@ -1,13 +1,13 @@
 require('source-map-support').install();
 import * as WebSocket from 'ws';
 import * as http from 'http';
-import { ServiceApi } from "./common";
+import { ServiceInterface } from "./common";
 
-class Api implements ServiceApi {
+class Api implements ServiceInterface {
     async add(a: number, b: number) {
         return a + b;
     }
-    
+
     async repeat(a: string, b: number) {
         return a.repeat(b);
     }

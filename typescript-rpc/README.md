@@ -14,7 +14,7 @@ and static type checks for server implementation and client calls.
 ### 1) Define available API methods - easy
 
 ```ts
-interface ServiceApi {
+interface ServiceInterface {
     add(a: number, b: number) : Promise<number>;
 }
 ```
@@ -22,7 +22,7 @@ interface ServiceApi {
 ### 2) Implement api on the server - easy
 
 ```ts
-class Serivce implements ServiceApi {
+class Serivce implements ServiceInterface {
     async add(a, b) {
         return a + b;
     }
@@ -32,7 +32,7 @@ class Serivce implements ServiceApi {
 ### 3) Typesafe API consumption on the client - a bit problematic
 
 ```ts
-let api = new RemoteApi<ServiceApi>('ws://localhost:8080');
+let api = new RemoteApi<ServiceInterface>('ws://localhost:8080');
 
 let result: number = await api.method('add')(5, 2);
 ```

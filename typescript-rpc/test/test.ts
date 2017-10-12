@@ -4,7 +4,7 @@ import * as net from 'net';
 import {ok, equal, fail, deepEqual} from 'assert';
 import {ITestDefinition} from 'mocha';
 import serverPromise from '../src/server';
-import { ServiceApi } from "../src/common";
+import { ServiceInterface } from "../src/common";
 import {RemoteApi} from '../src/client'
 
 
@@ -97,7 +97,7 @@ suite('RPC Tests', function() {
     });
 
     suite('Client wrapper tests', () => {
-        let api: RemoteApi<ServiceApi>;
+        let api: RemoteApi<ServiceInterface>;
 
         setup((done) => {
             api = new RemoteApi('ws://localhost:8080', done);

@@ -25,7 +25,7 @@ export class RemoteApi<T> {
         })
     }
 
-    method<K keyof T>(method: K): T[K] {
+    method<K extends keyof T>(method: K): T[K] {
         let self = this;
         return <any> function() {
             let args = Array.from(arguments);
