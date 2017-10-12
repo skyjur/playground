@@ -3,7 +3,14 @@
 Proof of concept RPC implementation with shared interface between client and server
 and static type checks for server implementation and client calls.
 
-Define available API methods:
+Goals:
+
+1) Desribe API as typescript Interface, all methods must return Promise
+2) On server use `class ImplementationX implements InterfaceX` to implement the interface
+3) On client use `new RemoteApi<IX>()`, without having to duplicate method descsriptors.
+
+
+## Define available API methods:
 
 ```ts
 interface ServiceApi {
@@ -11,7 +18,7 @@ interface ServiceApi {
 }
 ```
 
-Implement api on the server:
+## Implement api on the server:
 
 ```ts
 class Serivce implements ServiceApi {
@@ -21,7 +28,7 @@ class Serivce implements ServiceApi {
 }
 ```
 
-Consume in client:
+## API consumption on the client
 
 ```ts
 let api = new RemoteApi<ServiceApi>('ws://localhost:8080');
@@ -38,11 +45,10 @@ api.method('add')('something', 2);
 
 Ideally I would like to have `api.add(5, 2)` instead of `api.method('add')(5, 2)`. Unfortunatelly
 Interface definition is not available in compiled javascript, so it's not possible to dynamically initialize
-an object with all the methods. So I would need to manually define all the methods, which maybe would
-not be the worst thing to do.
+an object with method names loaded from the interface.
 
 I tried to figure out if I can avoid re-typing method definitions on
-client code  so far came up only with this solution:
+client code and so far came up only with this solution:
 
 ```ts
 class Client<T> {
