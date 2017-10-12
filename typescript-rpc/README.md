@@ -33,7 +33,7 @@ class Serivce implements ServiceInterface {
 
 #### Method 1)
 
-Implementation details can be found in `class RemoteApi` of [client.ts](./src/client.ts).
+Implementation can be found in `class RemoteApi` of [client.ts](./src/client.ts#L54).
 
 ```ts
 let api = new RemoteApi<ServiceInterface>('ws://localhost:8080');
@@ -72,7 +72,7 @@ requires writing custom compiler executable.
 
 #### Method 2: Proxy object
 
-Implementation details can be found in `function RemoteApi2()` of [client.ts](./src/client.ts).
+Implementation details can be found in `function RemoteApi2()` of [client.ts](./src/client.ts#L63).
 
 This approach uses Proxy object. API looks more fluent, but it's not supported in older browsers:
 
